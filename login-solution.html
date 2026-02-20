@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessible Login Solution</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+        h1 { font-size: 2.5em; font-weight: bold; margin-bottom: 20px; } /* FIX 1: Semantic <h1> */
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; } /* FIX 2: Clear labels */
+        .text-input { width: 100%; padding: 10px; border: 1px solid #ccc; box-sizing: border-box; }
+        
+        /* FIX 3: Semantic button styling */
+        button { 
+            background-color: #007bff; color: white; padding: 10px 15px; border: none; 
+            margin-top: 25px; cursor: pointer;
+        } 
+
+        /* Error message styling */
+        #loginError {
+            color: white; 
+            background-color: #d9534f; 
+            padding: 10px; 
+            margin-bottom: 15px;
+            display: none; 
+        }
+
+        
+    </style>
+</head>
+<body>
+
+    <h1>Hippo 3000 Sign-In</h1>
+
+    <p>We are thrilled to announce the new Hippo 3000! Sign in below to get early access and view your account details.</p>
+
+    <img src="placeholder_hippo.png" 
+         class="logo-image" 
+         alt="">
+
+    <p>Key Feature Spotlight:</p>
+    <ul>
+        <li>50% More Hippo</li>
+        <li>New Silent Cooling System</li>
+        <li>24-Hour Battery Life</li>
+    </ul>
+
+    <p>Please log in to continue your journey.</p>
+    
+    <div id="loginError" role="alert" tabindex="-1">
+        Login Failed. Please check your email and password.
+    </div>
+
+    <form id="loginForm">
+        <div class="form-group">
+            <label for="emailInputSolution">Email Address</label>
+            <input id="emailInputSolution" class="text-input" type="email" placeholder="Enter you email address e.g. test@domain.com">
+        </div>
+        <div class="form-group">
+            <label for="passwordInputSolution">Password</label>
+            <input id="passwordInputSolution" class="text-input" type="password" placeholder="Enter secure password">
+        </div>
+        
+        <button type="submit" onclick="validateLoginSolution(event);">
+            Continue to Profile Update
+        </button>
+    </form>
+
+    <script>
+        // Note: I'm keeping your challenge credentials here for consistency
+        const CORRECT_EMAIL = 'test';
+        const FALSE_PASSWORD = 'blindtest';
+        const CORRECT_PASSWORD = 'test';
+        
+        function validateLoginSolution(event) {
+            event.preventDefault(); 
+            
+            const email = document.getElementById('emailInputSolution').value;
+            const password = document.getElementById('passwordInputSolution').value;
+            const errorDiv = document.getElementById('loginError');
+
+            errorDiv.style.display = 'block'; // Ensure the error div is visible
+            
+            let errorMessage = '';
+
+            if (email === CORRECT_EMAIL && password === CORRECT_PASSWORD) {
+                // Successful login: Proceed to the Accessible Profile Page
+                window.location.href = 'profile-solution.html';
+                return;
+            } else if (email === CORRECT_EMAIL && password === FALSE_PASSWORD) {
+                // Failure condition 2 from challenge file
+                errorMessage = 'Login Failed. The password is actually blindtest123';
+            } else {
+                errorMessage = 'Login Failed. Please check your email and password.';
+            }
+            
+            errorDiv.textContent = errorMessage;
+
+            // CRITICAL FIX: Shift focus to the error message. 
+            errorDiv.focus(); 
+        }
+    </script>
+
+</body>
+</html>

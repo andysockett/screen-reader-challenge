@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessible Profile Update Solution</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+        h1 { font-size: 2.2em; margin-bottom: 25px; } 
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; } /* FIX: Clear labels */
+        .text-input { width: 100%; padding: 12px; border: 1px solid #ccc; box-sizing: border-box; }
+        
+        #finalError { 
+            color: white; background-color: #cc0000; padding: 15px; border: 1px solid #990000;
+            margin-bottom: 20px; display: none; 
+        }
+
+        /* FIX: Styling for the semantic checkbox */
+        .custom-check {
+            display: inline-block; width: 18px; height: 18px; border: 2px solid #333; 
+            margin-right: 8px; vertical-align: middle;
+        }
+        .accessible-checkbox:checked + .custom-check { background-color: #333; } 
+        
+        /* FIX: Semantic button styling */
+        button { 
+            background-color: #008cba; color: white; padding: 15px 25px; border: none; 
+            cursor: pointer; text-transform: uppercase; font-weight: bold; display: inline-block; 
+            margin-top: 15px;
+        }
+        
+        /* Styling for the date input */
+        input[type="date"] {
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid #ccc; 
+            box-sizing: border-box;
+        }
+        
+        .error-field-message {
+            color: red; 
+            font-size: 0.9em; 
+            margin-top: 5px; 
+            display: none; 
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Update Your Profile Details (Accessible Solution)</h1>
+
+    <p>This version ensures all errors and controls are announced clearly to assistive technology.</p>
+
+    <div class="form-section">
+        
+        <div id="finalError" role="alert" tabindex="-1">
+            CRITICAL ERROR: Please resolve all validation and term issues and submit again.
+        </div>
+        
+        <div id="mismatchError" class="error-field-message" aria-live="polite" style="display: none;">
+            Error: Your Email and Confirm Email fields must match.
+        </div>
+        
+        <form id="challengeForm">
+            
+            <div class="form-group">
+                <label for="firstNameInputSolution">First Name</label>
+                <input type="text" id="firstNameInputSolution" class="text-input" aria-describedby="firstNameErrorSolution" placeholder="e.g., Alex" required>
+                <span id="firstNameErrorSolution" class="error-field-message">First name is required.</span>
+            </div>
+            
+            <div class="form-group">
+                <label for="lastNameInputSolution">Last Name</label>
+                <input type="text" id="lastNameInputSolution" class="text-input" aria-describedby="lastNameErrorSolution" placeholder="e.g., Smith" required>
+                <span id="lastNameErrorSolution" class="error-field-message">Last name is required.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="emailInputSolution">Email Address</label>
+                <input type="email" id="emailInputSolution" class="text-input" oninput="checkEmailStatusSolution();" aria-describedby="emailStatusSolution" placeholder="example@domain.com" required>
+                <span id="emailStatusSolution" class="error-field-message" aria-live="polite" style="display: none;">Error: Invalid email format detected. Fix to proceed.</span>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmEmailInputSolution">Confirm Email</label>
+                <input type="email" id="confirmEmailInputSolution" class="text-input" placeholder="Re-enter email" required> 
+            </div>
+
+            <div class="form-group">
+                <label for="dobInputSolution">Date of Birth (1995-2005 range)</label>
+                <input type="date" class="text-input" id="dobInputSolution" aria-describedby="dobErrorSolution" required>
+                <span id="dobErrorSolution" class="error-field-message">Date of Birth is required.</span>
+            </div>
+            
+            <div class="form-group">
+                <label for="contactMethodInputSolution">Preferred Contact Method</label>
+                <select id="contactMethodInputSolution" class="text-input" aria-describedby="contactErrorSolution" required>
+                    <option value="">-- Select --</option>
+                    <option value="email">Email</option>
+                    <option value="phone">Phone Call</option>
+                    <option value="text">SMS</option>
+                    <option value="letter">Letter</option>
+                    <option value="house">I will come to your house</option>
+                </select>
+                <span id="contactErrorSolution" class="error-field-message">Please select a contact method.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="termsCheckboxSolution">
+                    <input type="checkbox" id="termsCheckboxSolution" class="accessible-checkbox" aria-required="true" required>
+                    I accept the <a href="#">Updated Privacy Terms</a>
+                </label>
+                <span id="termsErrorSolution" class="error-field-message">You must accept the terms.</span>
+            </div>
+
+            <button type="submit" onclick="simulateSubmissionSolution(event);">
+                Submit My Updates
+            </button>
+            
+        </form>
+    </div>
+
+    <script>
+        // Helper function for display
+        function toggleErrorSolution(id, show, message = null) {
+            const el = document.getElementById(id);
+            if (message) el.textContent = message;
+            el.style.display = show ? 'block' : 'none';
+        }
+
+        // FIX: Real-time email check that is announced
+        function checkEmailStatusSolution() {
+            const emailInput = document.getElementById('emailInputSolution').value;
+            const statusSpan = document.getElementById('emailStatusSolution');
+            
+            if (emailInput.length > 0 && !emailInput.includes('@')) {
+                statusSpan.textContent = "Error: Invalid email format detected. Fix to proceed.";
+                statusSpan.style.display = 'block';
+            } else {
+                statusSpan.style.display = 'none';
+            }
+        }
+
+        function simulateSubmissionSolution(event) {
+            event.preventDefault(); 
+            let submissionFailed = false;
+            
+            // --- Reset all errors ---
+            document.querySelectorAll('.error-field-message').forEach(el => el.style.display = 'none');
+            document.getElementById('finalError').style.display = 'none';
+
+            // --- Get values ---
+            const firstName = document.getElementById('firstNameInputSolution').value.trim();
+            const lastName = document.getElementById('lastNameInputSolution').value.trim();
+            const email = document.getElementById('emailInputSolution').value.trim();
+            const confirmEmail = document.getElementById('confirmEmailInputSolution').value.trim();
+            const dob = document.getElementById('dobInputSolution').value; 
+            const contactMethod = document.getElementById('contactMethodInputSolution').value;
+            const termsAccepted = document.getElementById('termsCheckboxSolution').checked;
+
+            // --- Validation Checks (Announced Failures) ---
+            
+            if (firstName === '') {
+                toggleErrorSolution('firstNameErrorSolution', true, 'First name is required.'); submissionFailed = true;
+            }
+            if (lastName === '') {
+                toggleErrorSolution('lastNameErrorSolution', true, 'Last name is required.'); submissionFailed = true;
+            }
+
+            // Email Mismatch
+            if (email !== confirmEmail) {
+                toggleErrorSolution('mismatchError', true, 'Error: Your Email and Confirm Email fields must match.'); submissionFailed = true;
+            }
+            
+            // Date of Birth Check (Announced Failures)
+            if (dob === '') {
+                toggleErrorSolution('dobErrorSolution', true, 'Date of Birth is required.'); submissionFailed = true;
+            } else {
+                const year = new Date(dob).getFullYear();
+                
+                if (year < 1995) {
+                    toggleErrorSolution('dobErrorSolution', true, 'You are too old for a Hippo 3000 (must be after 1995).'); submissionFailed = true;
+                } else if (year > 2005) {
+                    toggleErrorSolution('dobErrorSolution', true, 'You are too young for a Hippo 3000 (must be before 2005).'); submissionFailed = true;
+                }
+            }
+
+            // Contact Method
+            if (contactMethod === '') {
+                toggleErrorSolution('contactErrorSolution', true, 'Please select a contact method.'); submissionFailed = true;
+            }
+            
+            // Terms Checkbox
+            if (!termsAccepted) {
+                toggleErrorSolution('termsErrorSolution', true, 'You must accept the terms.'); submissionFailed = true;
+            }
+
+            // --- Final Submission Result ---
+            if (submissionFailed) {
+                document.getElementById('finalError').textContent = 'CRITICAL ERROR: Please resolve all validation and term issues and submit again.';
+                document.getElementById('finalError').style.display = 'block'; 
+                document.getElementById('finalError').focus(); 
+            } else {
+                // SUCCESS: Proceed to success page
+                window.location.href = 'success-cleared.html';
+            }
+        }
+    </script>
+
+</body>
+</html>

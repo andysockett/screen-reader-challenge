@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inaccessible Login Challenge</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+        .page-header { 
+            font-size: 2.5em; font-weight: bold; margin-bottom: 20px; display: block; 
+        } 
+        .form-group { margin-bottom: 15px; }
+        .text-input { width: 100%; padding: 10px; border: 1px solid #ccc; box-sizing: border-box; }
+        
+        /* The non-semantic button styling */
+        .login-btn { 
+            background-color: #f0f0f0; color: #333; padding: 10px 15px; border: 1px solid #ccc; 
+            text-decoration: none; display: inline-block; margin-top: 25px; cursor: pointer;
+        } 
+
+        /* Error message styling */
+        #loginError {
+            color: white; 
+            background-color: #d9534f; /* Red background */
+            padding: 10px; 
+            margin-bottom: 15px;
+            display: none; /* Initially hidden */
+        }
+    </style>
+</head>
+<body  style="opacity: 1;">
+    <p>StartHere</p>
+
+    <span class="page-header">Hippo 3000 Sign-In</span>
+
+    <p>We are thrilled to announce the new Hippo 3000! Sign in below to get early access and view your account details.</p>
+
+    <img src="placeholder_hippo.png" 
+         class="logo-image" 
+         alt="Here is a chart showing the massive performance uplift of the Hippo 3000" 
+         tabindex="0">
+
+    Key Feature Spotlight:
+    </p>
+    <ul>
+        <li>50% More Hippo</li>
+        <li>New Silent Cooling System</li>
+        <li>24-Hour Battery Life</li>
+    </ul>
+
+    <p>Please log in to continue your journey.</p>
+    
+    <div id="loginError">
+        Login Failed.
+    </div>
+
+    <form id="loginForm">
+        <div class="form-group">
+            <label>Username</label>
+            <input id="usernameInput" class="text-input">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input id="passwordInput" class="text-input" >
+        </div>
+        
+        <button class="login-btn" onclick="validateLogin(event);">
+            Login to Profile Update
+        </button>
+    </form>
+
+    <script>
+        const CORRECT_USERNAME = 'test';
+        const FALSE_PASSWORD = 'blindtest';
+        const CORRECT_PASSWORD = 'correct';
+        const error = 'This is wrong'
+
+        function validateLogin(event) {
+            event.preventDefault(); 
+            
+            const email = document.getElementById('usernameInput').value;
+            const password = document.getElementById('passwordInput').value;
+            const errorDiv = document.getElementById('loginError');
+
+            if (email === CORRECT_USERNAME && password === CORRECT_PASSWORD) {
+                // Successful login: Proceed to the next challenge page
+                window.location.href = 'profile-challenge.html';
+            } else if (email === CORRECT_USERNAME && password === FALSE_PASSWORD) {
+                // Fails the security requirement
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = 'Login Failed. I lied, the password is actually Hippo3000';
+            } else {
+                // Failed login: Show the error visually, but fail to announce it
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = 'Login Failed. Please check your email and password.';
+                
+                // CRITICAL FAILURE: Screen reader user sees the error but is not alerted 
+                // and their focus remains on the "Continue" button (or the last field).
+            }
+        }
+    </script>
+
+</body>
+</html>
