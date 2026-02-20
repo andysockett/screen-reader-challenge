@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My GitHub Pages Site</title>
+    <style>
+        :root {
+            --primary: #2ea44f;
+            --dark: #24292e;
+            --light: #f6f8fa;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            color: var(--dark);
+            background-color: var(--light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        main {
+            flex: 1;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h2>Screen reader challenge</h2>
+        <p>To simulate to the experience and potential frustration of a web user with a sight impairment, make your way through the following pages using only a screen reader. </p>
+        <p>The rules:</p>
+        <ul>
+            <li>No inspecting pages</li>
+            <li>Disable captions</li>
+            <li>Your username: exclusiveHippo</li>
+            <li>Your password: blindtest</li>
+        </ul>
+        
+        <p>Follow this link to begin</p>
+        <a href="https://github.com" class="btn">Start the test</a>
+    </main>
+
+</body>
+</html>
