@@ -26,6 +26,11 @@
             margin-bottom: 15px;
             display: none; /* Initially hidden */
         }
+        .submit-control { 
+            background-color: #008cba; color: white; padding: 15px 25px; border: none; 
+            cursor: pointer; text-transform: uppercase; font-weight: bold; display: inline-block; 
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body  style="opacity: 1;">
@@ -64,11 +69,11 @@
             <input id="passwordInput" class="text-input" >
         </div>
         
-        <button class="login-btn" onclick="validateLogin(event);">
+        <!-- <button class="login-btn" onclick="validateLogin(event);">
             Login to Profile Update
-        </button>
+        </button> -->
         <div class="submit-control" onclick="validateLogin(event);">
-                Submit My Updates
+                Login to Profile Update
         </div>
     </form>
 
