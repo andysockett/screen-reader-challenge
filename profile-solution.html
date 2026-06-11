@@ -222,10 +222,10 @@
         } else {
             const year = new Date(dob).getFullYear();
             if (year < 1995) {
-                document.getElementById('dobError').textContent = 'You are too old for a Hippo 3000.';
+                document.getElementById('dobError').textContent = 'Too old. You must be born after 2000 for a Hippo 3000.';
                 errorsCollection.push({ inputId: 'dobInput', message: 'You are too old for a Hippo 3000.', errorId: 'dobError' });
             } else if (year > 2005) {
-                document.getElementById('dobError').textContent = 'You are too young for a Hippo 3000.';
+                document.getElementById('dobError').textContent = 'Too young. You must be born before 2006 for a Hippo 3000.';
                 errorsCollection.push({ inputId: 'dobInput', message: 'You are too young for a Hippo 3000.', errorId: 'dobError' });
             } 
         }
