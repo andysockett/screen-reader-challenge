@@ -26,54 +26,80 @@
             margin-bottom: 15px;
             display: none; /* Initially hidden */
         }
+        .submit-control { 
+            background-color: #008cba; color: white; padding: 15px 25px; border: none; 
+            cursor: pointer; text-transform: uppercase; font-weight: bold; display: inline-block; 
+            margin-top: 15px;
+        }
+
+        /* Fixed styling for the Give Up button */
+        #giveUpBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #222;
+            color: #fff;
+            padding: 12px 20px;
+            border: 2px solid #fff;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 9999; /* Keep it on top of everything */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        #giveUpBtn:hover {
+            background-color: #444;
+        }
     </style>
 </head>
-<body  style="opacity: 0;">
-    <p>StartHere</p>
-
-    <span class="page-header">Hippo 3000 Sign-In</span>
-
-    <p>We are thrilled to announce the new Hippo 3000! Sign in below to get early access and view your account details.</p>
-
-    <img src="placeholder_hippo.png" 
-         class="logo-image" 
-         alt="Here is a chart showing the massive performance uplift of the Hippo 3000" 
-         tabindex="0">
-
-    Key Feature Spotlight:
-    </p>
-    <ul>
-        <li>50% More Hippo</li>
-        <li>New Silent Cooling System</li>
-        <li>24-Hour Battery Life</li>
-    </ul>
-
-    <p>Please log in to continue your journey.</p>
+<body>
     
-    <div id="loginError">
-        Login Failed.
+    <div id="challengeContent" style="opacity: 0;">
+        <p>StartHere</p>
+
+        <span class="page-header">Hippo 3000 Sign-In</span>
+
+        <p>We are thrilled to announce the new Hippo 3000! Sign in below to get early access and view your account details.</p>
+
+        <img src="placeholder_hippo.png" 
+             class="logo-image" 
+             tabindex="0">
+
+        <p>Key Feature Spotlight:</p>
+        <ul>
+            <li>50% More Hippo</li>
+            <li>New Silent Cooling System</li>
+            <li>24-Hour Battery Life</li>
+        </ul>
+
+        <p>Please log in to continue your journey.</p>
+        
+        <div id="loginError">
+            Login Failed.
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Username</label>
+            <input id="usernameInput" class="text-input">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input id="passwordInput" class="text-input" >
+            </div>
+            
+            <div class="submit-control" onclick="validateLogin(event);">
+                    Login to Profile Update
+            </div>
+        </form>
     </div>
 
-    <form id="loginForm">
-        <div class="form-group">
-            <input id="usernameInput" class="text-input" placeholder="Username">
-        </div>
-        <div class="form-group">
-            <input id="passwordInput" class="text-input" placeholder="Password">
-        </div>
-        
-        <button class="login-btn" onclick="validateLogin(event);">
-            Login to Profile Update
-        </button>
-        <div class="submit-control" onclick="validateLogin(event);">
-                Submit My Updates
-        </div>
-    </form>
+    <button id="giveUpBtn" onclick="toggleOpacity();">Give up, show page</button>
 
     <script>
         const CORRECT_USERNAME = 'exclusiveHippo';
         const FALSE_PASSWORD = 'blindtest';
-        const CORRECT_PASSWORD = 'correct';
+        const CORRECT_PASSWORD = 'hippo3000';
         const error = 'This is wrong'
 
         function validateLogin(event) {
@@ -84,19 +110,27 @@
             const errorDiv = document.getElementById('loginError');
 
             if (email === CORRECT_USERNAME && password === CORRECT_PASSWORD) {
-                // Successful login: Proceed to the next challenge page
                 window.location.href = 'profile-challenge.html';
             } else if (email === CORRECT_USERNAME && password === FALSE_PASSWORD) {
-                // Fails the security requirement
                 errorDiv.style.display = 'block';
-                errorDiv.textContent = 'Login Failed. I lied, the password is actually Hippo3000';
+                errorDiv.textContent = 'Login Failed. I lied, the password is actually hippo3000';
             } else {
-                // Failed login: Show the error visually, but fail to announce it
                 errorDiv.style.display = 'block';
                 errorDiv.textContent = 'Login Failed. Please check your email and password.';
-                
-                // CRITICAL FAILURE: Screen reader user sees the error but is not alerted 
-                // and their focus remains on the "Continue" button (or the last field).
+            }
+        }
+
+        /* 3. JS function to toggle the opacity between 0 and 1 */
+        function toggleOpacity() {
+            const content = document.getElementById('challengeContent');
+            const btn = document.getElementById('giveUpBtn');
+            
+            if (content.style.opacity === '0') {
+                content.style.opacity = '1';
+                btn.textContent = 'Hide page again';
+            } else {
+                content.style.opacity = '0';
+                btn.textContent = 'Give up, show page';
             }
         }
     </script>
