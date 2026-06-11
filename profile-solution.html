@@ -3,210 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accessible Profile Update Solution</title>
+    <title>Accessible Profile Update Solution (GDS Error Summary)</title>
     <style>
-        body { opacity: 0; font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
-        h1 { font-size: 2.2em; margin-bottom: 25px; } 
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; color: #333; }
+        h1 { font-size: 2.5em; font-weight: bold; margin-bottom: 20px; } 
         .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; } /* FIX: Clear labels */
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
         .text-input { width: 100%; padding: 12px; border: 1px solid #ccc; box-sizing: border-box; }
+        .text-input:focus, select:focus, input[type="date"]:focus { outline: 3px solid #008cba; outline-offset: 2px; }
         
-        #finalError { 
-            color: white; background-color: #cc0000; padding: 15px; border: 1px solid #990000;
-            margin-bottom: 20px; display: none; 
+        /* Challenge layout veil */
+        .challenge-container { opacity: 0; }
+        .challenge-container.revealed { opacity: 1; }
+
+        /* GDS Error Summary Styling */
+        .govuk-error-summary {
+            border: 4px solid #d4351c;
+            padding: 20px;
+            margin-bottom: 30px;
+            background-color: #fff;
+            display: none;
+        }
+        .govuk-error-summary:focus {
+            outline: 3px solid #ffdd00;
+            outline-offset: 0;
+        }
+        .govuk-error-summary__title {
+            color: #d4351c;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .govuk-error-summary__list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .govuk-error-summary__list li {
+            margin-bottom: 8px;
+        }
+        .govuk-error-summary__list a {
+            color: #d4351c;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        .govuk-error-summary__list a:focus {
+            background-color: #ffdd00;
+            color: #0b0c0c;
+            outline: none;
         }
 
-        /* FIX: Styling for the semantic checkbox */
-        .custom-check {
-            display: inline-block; width: 18px; height: 18px; border: 2px solid #333; 
-            margin-right: 8px; vertical-align: middle;
-        }
-        .accessible-checkbox:checked + .custom-check { background-color: #333; } 
+        .checkbox-container { display: flex; align-items: center; cursor: pointer; font-weight: normal; }
+        .checkbox-container input[type="checkbox"] { width: 18px; height: 18px; margin-right: 10px; cursor: pointer; }
         
-        /* FIX: Semantic button styling */
-        button { 
-            background-color: #008cba; color: white; padding: 15px 25px; border: none; 
-            cursor: pointer; text-transform: uppercase; font-weight: bold; display: inline-block; 
-            margin-top: 15px;
+        .submit-control { 
+            background-color: #008cba; color: white; padding: 15px 25px; border: none; cursor: pointer; 
+            text-transform: uppercase; font-weight: bold; display: inline-block; margin-top: 15px; font-size: 1em;
         }
-        
-        /* Styling for the date input */
-        input[type="date"] {
-            width: 100%; 
-            padding: 12px; 
-            border: 1px solid #ccc; 
-            box-sizing: border-box;
+        .submit-control:focus { outline: 3px solid #222; outline-offset: 2px; }
+        .error-field-message { color: #cc0000; font-size: 0.9em; margin-top: 5px; display: none; font-weight: bold; }
+
+        #giveUpBtn {
+            position: fixed; bottom: 20px; right: 20px; background-color: #222; color: #fff;
+            padding: 12px 20px; border: 2px solid #fff; border-radius: 4px; font-weight: bold;
+            cursor: pointer; z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
-        
-        .error-field-message {
-            color: red; 
-            font-size: 0.9em; 
-            margin-top: 5px; 
-            display: none; 
-        }
+        #giveUpBtn:hover { background-color: #444; }
     </style>
 </head>
 <body>
 
-    <h1>Update Your Profile Details (Accessible Solution)</h1>
+    <div id="challengeContent" class="challenge-container">
+        <h1>Update Your Profile Details</h1>
+        <p>Please review and update all fields before submitting your profile changes.</p>
 
-    <p>This version ensures all errors and controls are announced clearly to assistive technology.</p>
+        <div class="form-section">
+            
+            <div id="errorSummary" class="govuk-error-summary" role="alert" tabindex="-1">
+                <h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>
+                <div class="govuk-error-summary__body">
+                    <ul class="govuk-error-summary__list" id="errorSummaryList"></ul>
+                </div>
+            </div>
+            
+            <form id="challengeForm" onsubmit="simulateSubmission(event);" novalidate>
+                <div class="form-group">
+                    <label for="firstNameInput">First Name</label>
+                    <input type="text" id="firstNameInput" class="text-input">
+                    <span id="firstNameError" class="error-field-message">First name is required.</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lastNameInput">Last Name</label>
+                    <input type="text" id="lastNameInput" class="text-input">
+                    <span id="lastNameError" class="error-field-message">Last name is required.</span>
+                </div>
 
-    <div class="form-section">
-        
-        <div id="finalError" role="alert" tabindex="-1">
-            CRITICAL ERROR: Please resolve all validation and term issues and submit again.
+                <div class="form-group">
+                    <label for="emailInput">Email Address</label>
+                    <input type="email" id="emailInput" class="text-input"> 
+                    <span id="emailRequiredError" class="error-field-message">Enter an email address.</span>
+                    <span id="emailStatusError" class="error-field-message">Enter an email address in the correct format, like name@example.com.</span>
+                    <span id="mismatchError" class="error-field-message">Email address and confirm email address must be the same.</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmEmailInput">Confirm Email</label>
+                    <input type="email" id="confirmEmailInput" class="text-input"> 
+                </div>
+
+                <div class="form-group">
+                    <label for="dobInput">Date of Birth</label>
+                    <input type="date" class="text-input" id="dobInput">
+                    <span id="dobError" class="error-field-message">Date of Birth is required.</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactMethodInput">Preferred Contact Method</label>
+                    <select id="contactMethodInput" class="text-input">
+                        <option value="">-- Select --</option>
+                        <option value="email">Email</option>
+                        <option value="phone">Phone Call</option>
+                        <option value="text">SMS</option>
+                        <option value="letter">Letter</option>
+                        <option value="house">I will come to your house</option>
+                    </select>
+                    <span id="contactError" class="error-field-message">Please select a contact method.</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="termsCheckbox">
+                        <span>I accept the <a href="#">Updated Privacy Terms</a></span>
+                    </label>
+                    <span id="termsError" class="error-field-message">You must accept the terms.</span>
+                </div>
+
+                <button type="submit" class="submit-control">Submit My Updates</button>
+            </form>
         </div>
-        
-        <div id="mismatchError" class="error-field-message" aria-live="polite" style="display: none;">
-            Error: Your Email and Confirm Email fields must match.
-        </div>
-        
-        <form id="challengeForm">
-            
-            <div class="form-group">
-                <label for="firstNameInputSolution">First Name</label>
-                <input type="text" id="firstNameInputSolution" class="text-input" aria-describedby="firstNameErrorSolution" placeholder="e.g., Alex" required>
-                <span id="firstNameErrorSolution" class="error-field-message">First name is required.</span>
-            </div>
-            
-            <div class="form-group">
-                <label for="lastNameInputSolution">Last Name</label>
-                <input type="text" id="lastNameInputSolution" class="text-input" aria-describedby="lastNameErrorSolution" placeholder="e.g., Smith" required>
-                <span id="lastNameErrorSolution" class="error-field-message">Last name is required.</span>
-            </div>
-
-            <div class="form-group">
-                <label for="emailInputSolution">Email Address</label>
-                <input type="email" id="emailInputSolution" class="text-input" oninput="checkEmailStatusSolution();" aria-describedby="emailStatusSolution" placeholder="example@domain.com" required>
-                <span id="emailStatusSolution" class="error-field-message" aria-live="polite" style="display: none;">Error: Invalid email format detected. Fix to proceed.</span>
-            </div>
-            
-            <div class="form-group">
-                <label for="confirmEmailInputSolution">Confirm Email</label>
-                <input type="email" id="confirmEmailInputSolution" class="text-input" placeholder="Re-enter email" required> 
-            </div>
-
-            <div class="form-group">
-                <label for="dobInputSolution">Date of Birth (1995-2005 range)</label>
-                <input type="date" class="text-input" id="dobInputSolution" aria-describedby="dobErrorSolution" required>
-                <span id="dobErrorSolution" class="error-field-message">Date of Birth is required.</span>
-            </div>
-            
-            <div class="form-group">
-                <label for="contactMethodInputSolution">Preferred Contact Method</label>
-                <select id="contactMethodInputSolution" class="text-input" aria-describedby="contactErrorSolution" required>
-                    <option value="">-- Select --</option>
-                    <option value="email">Email</option>
-                    <option value="phone">Phone Call</option>
-                    <option value="text">SMS</option>
-                    <option value="letter">Letter</option>
-                    <option value="house">I will come to your house</option>
-                </select>
-                <span id="contactErrorSolution" class="error-field-message">Please select a contact method.</span>
-            </div>
-
-            <div class="form-group">
-                <label for="termsCheckboxSolution">
-                    <input type="checkbox" id="termsCheckboxSolution" class="accessible-checkbox" aria-required="true" required>
-                    I accept the <a href="#">Updated Privacy Terms</a>
-                </label>
-                <span id="termsErrorSolution" class="error-field-message">You must accept the terms.</span>
-            </div>
-
-            <button type="submit" onclick="simulateSubmissionSolution(event);">
-                Submit My Updates
-            </button>
-            
-        </form>
     </div>
 
-    <script>
-        // Helper function for display
-        function toggleErrorSolution(id, show, message = null) {
-            const el = document.getElementById(id);
-            if (message) el.textContent = message;
-            el.style.display = show ? 'block' : 'none';
+    <button id="giveUpBtn" aria-hidden="true" tabindex="-1" onclick="toggleOpacity();">
+        Give up, show page
+    </button>
+
+<script>
+    function toggleError(id, show, inputId) {
+        const errorEl = document.getElementById(id);
+        const inputEl = document.getElementById(inputId);
+        
+        errorEl.style.display = show ? 'block' : 'none';
+        
+        if (inputEl) {
+            inputEl.setAttribute('aria-invalid', show ? 'true' : 'false');
+            let currentDescribedBy = inputEl.getAttribute('aria-describedby') || '';
+            let ids = currentDescribedBy.split(' ').filter(x => x);
+            
+            if (show) {
+                if (!ids.includes(id)) ids.push(id);
+            } else {
+                ids = ids.filter(x => x !== id);
+            }
+            
+            if (ids.length > 0) {
+                inputEl.setAttribute('aria-describedby', ids.join(' '));
+            } else {
+                inputEl.removeAttribute('aria-describedby');
+            }
+        }
+    }
+
+    function simulateSubmission(event) {
+        event.preventDefault(); 
+        
+        const summaryBox = document.getElementById('errorSummary');
+        const summaryList = document.getElementById('errorSummaryList');
+        
+        summaryBox.style.display = 'none';
+        summaryList.innerHTML = '';
+        document.querySelectorAll('.error-field-message').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('input, select').forEach(el => {
+            el.setAttribute('aria-invalid', 'false');
+            el.removeAttribute('aria-describedby');
+        });
+
+        const firstName = document.getElementById('firstNameInput').value.trim();
+        const lastName = document.getElementById('lastNameInput').value.trim();
+        const email = document.getElementById('emailInput').value.trim();
+        const confirmEmail = document.getElementById('confirmEmailInput').value.trim();
+        const dob = document.getElementById('dobInput').value; 
+        const contactMethod = document.getElementById('contactMethodInput').value;
+        const termsAccepted = document.getElementById('termsCheckbox').checked;
+        
+        let errorsCollection = [];
+
+        if (firstName === '') {
+            errorsCollection.push({ inputId: 'firstNameInput', message: 'First name is required.', errorId: 'firstNameError' });
+        }
+        if (lastName === '') {
+            errorsCollection.push({ inputId: 'lastNameInput', message: 'Last name is required.', errorId: 'lastNameError' });
         }
 
-        // FIX: Real-time email check that is announced
-        function checkEmailStatusSolution() {
-            const emailInput = document.getElementById('emailInputSolution').value;
-            const statusSpan = document.getElementById('emailStatusSolution');
-            
-            if (emailInput.length > 0 && !emailInput.includes('@')) {
-                statusSpan.textContent = "Error: Invalid email format detected. Fix to proceed.";
-                statusSpan.style.display = 'block';
-            } else {
-                statusSpan.style.display = 'none';
-            }
+        if (email === '') {
+            errorsCollection.push({ inputId: 'emailInput', message: 'Enter an email address.', errorId: 'emailRequiredError' });
+        } else if (!email.includes('@hippodigital')) {
+            errorsCollection.push({ inputId: 'emailInput', message: 'Must use a hippodigital email address', errorId: 'emailStatusError' });
         }
 
-        function simulateSubmissionSolution(event) {
-            event.preventDefault(); 
-            let submissionFailed = false;
-            
-            // --- Reset all errors ---
-            document.querySelectorAll('.error-field-message').forEach(el => el.style.display = 'none');
-            document.getElementById('finalError').style.display = 'none';
+        // GDS requires checking confirmation fields explicitly against the target input field
+        if (email !== confirmEmail && email !== '') {
+            errorsCollection.push({ inputId: 'confirmEmailInput', message: 'Email address and confirm email address must be the same.', errorId: 'mismatchError' });
+        }
+        
+        if (dob === '') {
+            errorsCollection.push({ inputId: 'dobInput', message: 'Date of Birth is required.', errorId: 'dobError' });
+        } else {
+            const year = new Date(dob).getFullYear();
+            if (year < 1995) {
+                document.getElementById('dobError').textContent = 'You are too old for a Hippo 3000.';
+                errorsCollection.push({ inputId: 'dobInput', message: 'You are too old for a Hippo 3000.', errorId: 'dobError' });
+            } else if (year > 2005) {
+                document.getElementById('dobError').textContent = 'You are too young for a Hippo 3000.';
+                errorsCollection.push({ inputId: 'dobInput', message: 'You are too young for a Hippo 3000.', errorId: 'dobError' });
+            } 
+        }
 
-            // --- Get values ---
-            const firstName = document.getElementById('firstNameInputSolution').value.trim();
-            const lastName = document.getElementById('lastNameInputSolution').value.trim();
-            const email = document.getElementById('emailInputSolution').value.trim();
-            const confirmEmail = document.getElementById('confirmEmailInputSolution').value.trim();
-            const dob = document.getElementById('dobInputSolution').value; 
-            const contactMethod = document.getElementById('contactMethodInputSolution').value;
-            const termsAccepted = document.getElementById('termsCheckboxSolution').checked;
+        if (contactMethod === '') {
+            errorsCollection.push({ inputId: 'contactMethodInput', message: 'Please select a contact method.', errorId: 'contactError' });
+        }
+        if (!termsAccepted) {
+            errorsCollection.push({ inputId: 'termsCheckbox', message: 'You must accept the terms.', errorId: 'termsError' });
+        }
 
-            // --- Validation Checks (Announced Failures) ---
+        if (errorsCollection.length > 0) {
+            summaryBox.style.display = 'block';
             
-            if (firstName === '') {
-                toggleErrorSolution('firstNameErrorSolution', true, 'First name is required.'); submissionFailed = true;
-            }
-            if (lastName === '') {
-                toggleErrorSolution('lastNameErrorSolution', true, 'Last name is required.'); submissionFailed = true;
-            }
-
-            // Email Mismatch
-            if (email !== confirmEmail) {
-                toggleErrorSolution('mismatchError', true, 'Error: Your Email and Confirm Email fields must match.'); submissionFailed = true;
-            }
-            
-            // Date of Birth Check (Announced Failures)
-            if (dob === '') {
-                toggleErrorSolution('dobErrorSolution', true, 'Date of Birth is required.'); submissionFailed = true;
-            } else {
-                const year = new Date(dob).getFullYear();
+            errorsCollection.forEach(err => {
+                toggleError(err.errorId, true, err.inputId);
                 
-                if (year < 1995) {
-                    toggleErrorSolution('dobErrorSolution', true, 'You are too old for a Hippo 3000 (must be after 1995).'); submissionFailed = true;
-                } else if (year > 2005) {
-                    toggleErrorSolution('dobErrorSolution', true, 'You are too young for a Hippo 3000 (must be before 2005).'); submissionFailed = true;
-                }
-            }
-
-            // Contact Method
-            if (contactMethod === '') {
-                toggleErrorSolution('contactErrorSolution', true, 'Please select a contact method.'); submissionFailed = true;
-            }
+                const li = document.createElement('li');
+                const anchor = document.createElement('a');
+                anchor.href = `#${err.inputId}`;
+                anchor.textContent = err.message;
+                
+                li.appendChild(anchor);
+                summaryList.appendChild(li);
+            });
             
-            // Terms Checkbox
-            if (!termsAccepted) {
-                toggleErrorSolution('termsErrorSolution', true, 'You must accept the terms.'); submissionFailed = true;
-            }
-
-            // --- Final Submission Result ---
-            if (submissionFailed) {
-                document.getElementById('finalError').textContent = 'CRITICAL ERROR: Please resolve all validation and term issues and submit again.';
-                document.getElementById('finalError').style.display = 'block'; 
-                document.getElementById('finalError').focus(); 
-            } else {
-                // SUCCESS: Proceed to success page
-                window.location.href = 'success-cleared.html';
-            }
+            summaryBox.focus();
+        } else {
+            window.location.href = 'success-cleared.html';
         }
-    </script>
+    }
 
+    function toggleOpacity() {
+        const content = document.getElementById('challengeContent');
+        const btn = document.getElementById('giveUpBtn');
+        content.classList.toggle('revealed');
+        btn.textContent = content.classList.contains('revealed') ? 'Hide page again' : 'Give up, show page';
+    }
+</script>
 </body>
 </html>
