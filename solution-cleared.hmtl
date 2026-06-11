@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge Cleared!</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 30px; text-align: center; }
+        
+        /* The Success Banner */
+        .success-banner {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+        }
+        
+        /* Semantic Heading for the banner */
+        .success-banner h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .next-step {
+            font-size: 1.2em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="success-banner" role="status">
+        <h1>Submission Successful. Challenge Cleared!</h1>
+    </div>
+
+    <div class="next-step">
+        <p>Much better</p>
+    </div>
+
+</body>
+</html>
