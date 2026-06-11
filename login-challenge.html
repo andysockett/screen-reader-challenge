@@ -26,11 +26,6 @@
             margin-bottom: 15px;
             display: none; /* Initially hidden */
         }
-        .submit-control { 
-            background-color: #008cba; color: white; padding: 15px 25px; border: none; 
-            cursor: pointer; text-transform: uppercase; font-weight: bold; display: inline-block; 
-            margin-top: 15px;
-        }
     </style>
 </head>
 <body  style="opacity: 0;">
@@ -42,6 +37,7 @@
 
     <img src="placeholder_hippo.png" 
          class="logo-image" 
+         alt="Here is a chart showing the massive performance uplift of the Hippo 3000" 
          tabindex="0">
 
     Key Feature Spotlight:
@@ -60,26 +56,24 @@
 
     <form id="loginForm">
         <div class="form-group">
-            <label>Username</label>
-            <input id="usernameInput" class="text-input">
+            <input id="usernameInput" class="text-input" placeholder="Username">
         </div>
         <div class="form-group">
-            <label>Password</label>
-            <input id="passwordInput" class="text-input" >
+            <input id="passwordInput" class="text-input" placeholder="Password">
         </div>
         
-        <!-- <button class="login-btn" onclick="validateLogin(event);">
+        <button class="login-btn" onclick="validateLogin(event);">
             Login to Profile Update
-        </button> -->
+        </button>
         <div class="submit-control" onclick="validateLogin(event);">
-                Login to Profile Update
+                Submit My Updates
         </div>
     </form>
 
     <script>
         const CORRECT_USERNAME = 'exclusiveHippo';
         const FALSE_PASSWORD = 'blindtest';
-        const CORRECT_PASSWORD = 'hippo3000';
+        const CORRECT_PASSWORD = 'correct';
         const error = 'This is wrong'
 
         function validateLogin(event) {
@@ -95,7 +89,7 @@
             } else if (email === CORRECT_USERNAME && password === FALSE_PASSWORD) {
                 // Fails the security requirement
                 errorDiv.style.display = 'block';
-                errorDiv.textContent = 'Login Failed. I lied, the password is actually hippo3000';
+                errorDiv.textContent = 'Login Failed. I lied, the password is actually Hippo3000';
             } else {
                 // Failed login: Show the error visually, but fail to announce it
                 errorDiv.style.display = 'block';
