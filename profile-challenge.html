@@ -215,11 +215,11 @@
             const dobErrorSpan = document.getElementById('dobError');
             
             if (year < 2000) {
-                dobErrorSpan.textContent = 'You are too old for a Hippo 3000.';
+                dobErrorSpan.textContent = 'Invalid date of birth.';
                 toggleError('dobError', true);
                 submissionFailed = true;
             } else if (year > 2005) {
-                dobErrorSpan.textContent = 'You are too young for a Hippo 3000.';
+                dobErrorSpan.textContent = 'Invalid date of birth.';
                 toggleError('dobError', true);
                 submissionFailed = true;
             } 
