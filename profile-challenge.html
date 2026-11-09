@@ -207,7 +207,7 @@
             const year = new Date(dob).getFullYear();
             const dobErrorSpan = document.getElementById('dobError');
             
-            if (year < 2000) {
+            if (year > 2000) {
                 dobErrorSpan.textContent = 'Invalid date of birth.';
                 toggleError('dobError', true);
                 submissionFailed = true;
