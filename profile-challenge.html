@@ -159,18 +159,6 @@
         document.getElementById(id).style.display = show ? 'block' : 'none';
     }
 
-    // Real-time email format check (silent error)
-    function checkEmailStatus() {
-        const emailInput = document.getElementById('emailInput').value;
-        const statusSpan = document.getElementById('email-status');
-        
-        if (emailInput.length > 0 && !emailInput.includes('@hippo')) {
-            statusSpan.style.display = 'block';
-        } else {
-            statusSpan.style.display = 'none';
-        }
-    }
-
     function simulateSubmission(event) {
         event.preventDefault(); 
         let submissionFailed = false;
@@ -201,12 +189,17 @@
         }
 
         // 2. Email Mismatch
+        if (!email.includes('@hippo')) {
+            toggleError('email-status', true);
+            submissionFailed = true;    
+        }
+
         if (email !== confirmEmail) {
             toggleError('mismatchError', true);
             submissionFailed = true;
         }
         
-        // 3. Date of Birth Check (NEW COMPLEX LOGIC)
+        // 3. Date of Birth Check
         if (dob === '') {
             toggleError('dobError', true);
             submissionFailed = true;
@@ -215,10 +208,6 @@
             const dobErrorSpan = document.getElementById('dobError');
             
             if (year < 2000) {
-                dobErrorSpan.textContent = 'Invalid date of birth.';
-                toggleError('dobError', true);
-                submissionFailed = true;
-            } else if (year > 2005) {
                 dobErrorSpan.textContent = 'Invalid date of birth.';
                 toggleError('dobError', true);
                 submissionFailed = true;
