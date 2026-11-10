@@ -243,7 +243,8 @@
             content.style.opacity = '1';
             btn.textContent = 'Hide page again';
         } else {
-            // Blur the active control first so an open native select popup is dismissed.
+            // Blur the native select explicitly to dismiss its browser-rendered options popup.
+            document.getElementById('contactMethodInput').blur();
             if (content.contains(document.activeElement)) {
                 document.activeElement.blur();
             }
