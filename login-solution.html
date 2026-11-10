@@ -3,47 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accessible Login Solution (Blind Test)</title>
+    <title>Accessible Login Solution</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; color: #333; }
-        h1 { font-size: 2.5em; font-weight: bold; margin-bottom: 20px; } 
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .text-input { width: 100%; padding: 10px; border: 1px solid #ccc; box-sizing: border-box; }
-        .text-input:focus { outline: 3px solid #008cba; outline-offset: 2px; }
+        :root {
+            --bg: #f5f7fa;
+            --panel: #ffffff;
+            --text: #1f2937;
+            --muted: #4b5563;
+            --border: #cbd5e1;
+            --focus: #005fcc;
+            --primary: #0b5ea8;
+            --primary-dark: #084b88;
+            --error-bg: #fdf2f2;
+            --error-border: #b91c1c;
+            --error-text: #7f1d1d;
+            --shadow: rgba(15, 23, 42, 0.08);
+        }
 
-        /* Safe CSS class-based opacity toggle */
-        .challenge-container { opacity: 0; }
-        .challenge-container.revealed { opacity: 1; }
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .skip-link {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            background: #000;
+            color: #fff;
+            padding: 0.75rem 1rem;
+            z-index: 100;
+        }
+
+        .skip-link:focus {
+            left: 1rem;
+            top: 1rem;
+        }
+
+        main {
+            max-width: 720px;
+            margin: 2rem auto;
+            background: var(--panel);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        h1, h2, h3 {
+            line-height: 1.2;
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.35rem;
+            font-weight: 700;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 0.8rem 0.9rem;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            background: #fff;
+            color: var(--text);
+        }
+
+        .text-input:focus,
+        button:focus,
+        a:focus,
+        input[type="checkbox"]:focus {
+            outline: 3px solid var(--focus);
+            outline-offset: 2px;
+        }
+
+        .submit-control {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.9rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 700;
+            margin-top: 1rem;
+        }
+
+        .submit-control:hover {
+            background-color: var(--primary-dark);
+        }
 
         #loginError {
-            color: white; background-color: #d9534f; padding: 10px; margin-bottom: 15px; display: none; 
+            display: none;
+            padding: 0.9rem 1rem;
+            margin: 1rem 0;
+            border: 2px solid var(--error-border);
+            border-radius: 6px;
+            background: var(--error-bg);
+            color: var(--error-text);
+            font-weight: 700;
         }
-        .submit-control { 
-            background-color: #008cba; color: white; padding: 15px 25px; border: none; 
-            cursor: pointer; text-transform: uppercase; font-weight: bold; display: inline-block; 
-            margin-top: 15px; font-size: 1em;
-        }
-        .submit-control:focus { outline: 3px solid #222; outline-offset: 2px; }
 
-        /* Bypass button pinned to bottom corner */
-        #giveUpBtn {
-            position: fixed; bottom: 20px; right: 20px; background-color: #222; color: #fff;
-            padding: 12px 20px; border: 2px solid #fff; border-radius: 4px; font-weight: bold;
-            cursor: pointer; z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        #loginError[aria-live="assertive"] {
+            min-height: 1.2rem;
         }
-        #giveUpBtn:hover { background-color: #444; }
+
+        #giveUpBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #1f2937;
+            color: white;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid white;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 9999;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        #giveUpBtn:hover {
+            background-color: #111827;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
     </style>
 </head>
 <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
 
-    <div id="challengeContent" class="challenge-container">
+    <main id="main-content">
         <h1>Hippo 3000 Sign-In</h1>
         <p>We are thrilled to announce the new Hippo 3000! Sign in below to get early access and view your account details.</p>
 
         <img src="placeholder_hippo.png" alt="Hippo 3000 corporate logo" class="logo-image">
 
-        <p>Key Feature Spotlight:</p>
+        <h2>Key feature spotlight</h2>
         <ul>
             <li>50% More Hippo</li>
             <li>New Silent Cooling System</li>
@@ -51,22 +182,23 @@
         </ul>
 
         <p>Please log in to continue your journey.</p>
-        
-        <div id="loginError" role="alert"></div>
 
-        <form id="loginForm" onsubmit="validateLogin(event);">
+        <div id="loginError" role="alert" aria-live="assertive" aria-atomic="true"></div>
+
+        <form id="loginForm" novalidate>
             <div class="form-group">
                 <label for="usernameInput">Username</label>
-                <input id="usernameInput" type="text" class="text-input" required>
+                <input id="usernameInput" name="username" type="email" class="text-input" autocomplete="username" required aria-required="true">
             </div>
+
             <div class="form-group">
                 <label for="passwordInput">Password</label>
-                <input id="passwordInput" type="password" class="text-input" required>
+                <input id="passwordInput" name="password" type="password" class="text-input" autocomplete="current-password" required aria-required="true">
             </div>
-            
+
             <button type="submit" class="submit-control">Login to Profile Update</button>
         </form>
-    </div>
+    </main>
 
     <button id="giveUpBtn" aria-hidden="true" tabindex="-1" onclick="toggleOpacity();">
         Give up, show page
@@ -77,26 +209,74 @@
         const FALSE_PASSWORD = 'blindtest';
         const CORRECT_PASSWORD = 'hippo3000';
 
-        function validateLogin(event) {
-            event.preventDefault(); 
-            const email = document.getElementById('usernameInput').value.trim();
-            const password = document.getElementById('passwordInput').value.trim();
-            const errorDiv = document.getElementById('loginError');
+        const username = document.getElementById('usernameInput');
+        const password = document.getElementById('passwordInput');
+        const errorDiv = document.getElementById('loginError');
+        const form = document.getElementById('loginForm');
 
-            if (email === CORRECT_USERNAME && password === CORRECT_PASSWORD) {
-                window.location.href = 'profile-solution.html';
-            } else if (email === CORRECT_USERNAME && password === FALSE_PASSWORD) {
-                errorDiv.style.display = 'block';
-                errorDiv.textContent = 'Login Failed. The password is actually hippo3000.';
-            } else {
-                errorDiv.style.display = 'block';
-                errorDiv.textContent = 'Login Failed. Please check your username and password.';
-            }
+        function clearErrorState() {
+            errorDiv.style.display = 'none';
+            errorDiv.textContent = '';
+            username.setAttribute('aria-invalid', 'false');
+            password.setAttribute('aria-invalid', 'false');
+            username.removeAttribute('aria-describedby');
+            password.removeAttribute('aria-describedby');
         }
+
+        function setFieldError(input, message) {
+            input.setAttribute('aria-invalid', 'true');
+            input.setAttribute('aria-describedby', 'loginError');
+            errorDiv.style.display = 'block';
+            errorDiv.textContent = message;
+        }
+
+        function validateLogin(event) {
+            event.preventDefault();
+            clearErrorState();
+
+            const email = username.value.trim();
+            const pass = password.value.trim();
+
+            if (!email || !pass) {
+                if (!email) {
+                    setFieldError(username, 'Enter your username.');
+                }
+                if (!pass) {
+                    setFieldError(password, 'Enter your password.');
+                }
+                if (email) {
+                    username.focus();
+                } else {
+                    username.focus();
+                }
+                return;
+            }
+
+            if (email === CORRECT_USERNAME && pass === CORRECT_PASSWORD) {
+                window.location.href = 'profile-solution.html';
+                return;
+            }
+
+            if (email === CORRECT_USERNAME && pass === FALSE_PASSWORD) {
+                setFieldError(password, 'Login failed. The password is actually hippo3000.');
+                password.focus();
+                return;
+            }
+
+            setFieldError(username, 'Login failed. Please check your username and password.');
+            username.focus();
+        }
+
+        form.addEventListener('submit', validateLogin);
 
         function toggleOpacity() {
             const content = document.getElementById('challengeContent');
             const btn = document.getElementById('giveUpBtn');
+
+            if (!content) {
+                return;
+            }
+
             content.classList.toggle('revealed');
             btn.textContent = content.classList.contains('revealed') ? 'Hide page again' : 'Give up, show page';
         }
