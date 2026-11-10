@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Challenge cleared!</title>
+    <title>Experience complete</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,7 +14,7 @@
             color: #24292e;
         }
 
-        .success-banner {
+        .completion-banner {
             background-color: #e6f4ea;
             color: #174b26;
             padding: 25px;
@@ -23,16 +23,21 @@
             margin-bottom: 30px;
         }
 
-        .success-banner h1 {
+        .completion-banner h1 {
             margin: 0;
             font-size: 2em;
         }
 
-        .next-step {
-            font-size: 1.1em;
+        a {
+            color: #0969da;
         }
 
-        .solution-link {
+        a:focus {
+            outline: 3px solid #0969da;
+            outline-offset: 3px;
+        }
+
+        .return-link {
             display: inline-block;
             margin-top: 0.5rem;
             padding: 12px 18px;
@@ -42,26 +47,19 @@
             font-weight: bold;
             text-decoration: none;
         }
-
-        a:focus {
-            outline: 3px solid #0969da;
-            outline-offset: 3px;
-        }
     </style>
 </head>
 <body>
     <main>
-        <section class="success-banner" aria-labelledby="success-heading">
-            <h1 id="success-heading">Challenge complete!</h1>
+        <section class="completion-banner" aria-labelledby="completion-heading">
+            <h1 id="completion-heading">You’ve completed the experience</h1>
         </section>
 
-        <div class="next-step">
-            <p>You made it through the Hippo 3000 challenge. Unfortunately, Hippo 3000 stock is no longer available.</p>
+        <p>You’ve tried both the intentionally difficult pages and their improved versions. The contrast shows how accessible labels, keyboard support, clear instructions, and helpful error messages can make a difference.</p>
 
-            <h2>See the accessible versions</h2>
-            <p>Want to see how the same login and profile-update pages work when accessibility is considered? Follow the link below to explore the improved versions.</p>
-            <p><a class="solution-link" href="login-solution.html">Explore the improved login and profile pages</a></p>
-        </div>
+        <p>This exercise is only a brief demonstration; it cannot represent the varied experiences of people who use screen readers. Thank you for taking part.</p>
+
+        <p><a class="return-link" href="index.html">Return to the challenge introduction</a></p>
     </main>
 </body>
 </html>
