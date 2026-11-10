@@ -101,6 +101,7 @@
                 <div class="form-group">
                     <label>Email Address</label>
                     <input type="email" id="emailInput" class="text-input" oninput="checkEmailStatus();"> 
+                    <span id="emailRequiredError" class="error-field-message">Email is required.</span>
                     <span id="email-status" class="error-field-message" style="display: none;"> Invalid email format.</span>
                 </div>
                 
@@ -188,13 +189,16 @@
             submissionFailed = true;
         }
 
-        // 2. Email Mismatch
-        if (!email.includes('@hippodigital')) {
+        // 2. Email validation and mismatch
+        if (email === '') {
+            toggleError('emailRequiredError', true);
+            submissionFailed = true;
+        } else if (!email.includes('@hippodigital')) {
             toggleError('email-status', true);
-            submissionFailed = true;    
+            submissionFailed = true;
         }
 
-        if (email !== confirmEmail) {
+        if (email !== '' && email !== confirmEmail) {
             toggleError('mismatchError', true);
             submissionFailed = true;
         }
