@@ -207,16 +207,7 @@
         if (dob === '') {
             toggleError('dobError', true);
             submissionFailed = true;
-        } else {
-            const year = new Date(dob).getFullYear();
-            const dobErrorSpan = document.getElementById('dobError');
-            
-            if (year > 2000) {
-                dobErrorSpan.textContent = 'Invalid date of birth.';
-                toggleError('dobError', true);
-                submissionFailed = true;
-            } 
-        }
+        } 
 
         // 4. Contact Method
         if (contactMethod === '') {
