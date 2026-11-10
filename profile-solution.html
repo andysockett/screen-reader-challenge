@@ -164,12 +164,31 @@
         .submit-control:hover {
             background-color: var(--primary-dark);
         }
+
+        #giveUpBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #1f2937;
+            color: white;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid white;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 9999;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        #giveUpBtn:hover {
+            background-color: #111827;
+        }
     </style>
 </head>
 <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
 
-    <main id="main-content">
+    <main id="main-content" style="opacity: 0;">
         <h1>Update Your Profile Details</h1>
         <p>Please review and update all fields before submitting your profile changes.</p>
 
@@ -234,6 +253,10 @@
             <button type="submit" class="submit-control">Submit My Updates</button>
         </form>
     </main>
+
+    <button id="giveUpBtn" aria-hidden="true" tabindex="-1" onclick="toggleOpacity();">
+        Give up, show page
+    </button>
 
     <script>
         const summaryBox = document.getElementById('errorSummary');
@@ -369,6 +392,14 @@
         }
 
         document.getElementById('challengeForm').addEventListener('submit', validateForm);
+
+        function toggleOpacity() {
+            const content = document.getElementById('main-content');
+            const btn = document.getElementById('giveUpBtn');
+
+            content.style.opacity = content.style.opacity === '0' ? '1' : '0';
+            btn.textContent = content.style.opacity === '1' ? 'Hide page again' : 'Give up, show page';
+        }
     </script>
 </body>
 </html>
