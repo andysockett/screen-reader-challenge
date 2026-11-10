@@ -9,7 +9,6 @@
             --bg: #f5f7fa;
             --panel: #ffffff;
             --text: #1f2937;
-            --muted: #4b5563;
             --border: #cbd5e1;
             --focus: #005fcc;
             --primary: #0b5ea8;
@@ -17,9 +16,6 @@
             --error-bg: #fdf2f2;
             --error-border: #b91c1c;
             --error-text: #7f1d1d;
-            --success-bg: #ecfdf5;
-            --success-border: #16a34a;
-            --success-text: #166534;
             --shadow: rgba(15, 23, 42, 0.08);
         }
 
@@ -67,24 +63,21 @@
             margin-bottom: 1rem;
         }
 
-        .form-section {
-            margin-top: 1rem;
-        }
-
         .form-group {
             margin-bottom: 1.25rem;
         }
 
-        label,
-        legend {
+        label {
             display: block;
             font-weight: 700;
             margin-bottom: 0.35rem;
         }
 
-        .form-row {
-            display: grid;
-            gap: 1rem;
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.25rem;
         }
 
         .text-input,
@@ -144,22 +137,15 @@
             color: var(--error-text);
             background: var(--error-bg);
             border-left: 4px solid var(--error-border);
-            padding: 0.5rem 0.75rem;
-            margin-top: 0.4rem;
+            padding: 0.55rem 0.75rem;
+            margin-top: 0.45rem;
             border-radius: 4px;
             font-weight: 700;
         }
 
-        .checkbox-row {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.25rem;
-        }
-
         input[type="checkbox"] {
-            width: 1.2rem;
-            height: 1.2rem;
+            width: 1.15rem;
+            height: 1.15rem;
             flex-shrink: 0;
         }
 
@@ -177,25 +163,6 @@
 
         .submit-control:hover {
             background-color: var(--primary-dark);
-        }
-
-        #giveUpBtn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #1f2937;
-            color: white;
-            padding: 0.8rem 1.2rem;
-            border: 2px solid white;
-            border-radius: 6px;
-            font-weight: 700;
-            cursor: pointer;
-            z-index: 9999;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-        }
-
-        #giveUpBtn:hover {
-            background-color: #111827;
         }
     </style>
 </head>
@@ -229,12 +196,12 @@
                 <input type="email" id="emailInput" class="text-input" autocomplete="email" required>
                 <div id="emailRequiredError" class="error-field-message" aria-live="polite">Enter an email address.</div>
                 <div id="emailStatusError" class="error-field-message" aria-live="polite">Use an email address ending in @hippodigital.co.uk or @hippodigital.com.</div>
-                <div id="mismatchError" class="error-field-message" aria-live="polite">Enter the same email address in both fields.</div>
             </div>
 
             <div class="form-group">
                 <label for="confirmEmailInput">Confirm Email</label>
                 <input type="email" id="confirmEmailInput" class="text-input" autocomplete="email" required>
+                <div id="mismatchError" class="error-field-message" aria-live="polite">Enter the same email address in both fields.</div>
             </div>
 
             <div class="form-group">
@@ -267,10 +234,6 @@
             <button type="submit" class="submit-control">Submit My Updates</button>
         </form>
     </main>
-
-    <button id="giveUpBtn" aria-hidden="true" tabindex="-1" onclick="toggleOpacity();">
-        Give up, show page
-    </button>
 
     <script>
         const summaryBox = document.getElementById('errorSummary');
@@ -332,6 +295,7 @@
             const termsAccepted = document.getElementById('termsCheckbox').checked;
 
             const errors = [];
+            const allowedDomains = ['@hippodigital.co.uk', '@hippodigital.com'];
 
             if (!firstName) {
                 errors.push({ inputId: 'firstNameInput', errorId: 'firstNameError', message: 'Enter your first name.' });
@@ -343,11 +307,16 @@
 
             if (!email) {
                 errors.push({ inputId: 'emailInput', errorId: 'emailRequiredError', message: 'Enter an email address.' });
-            } else if (!email.includes('@hippodigital')) {
-                errors.push({ inputId: 'emailInput', errorId: 'emailStatusError', message: 'Use an email address ending in @hippodigital.co.uk or @hippodigital.com.' });
+            } else {
+                const validDomain = allowedDomains.some(domain => email.toLowerCase().endsWith(domain));
+                if (!validDomain) {
+                    errors.push({ inputId: 'emailInput', errorId: 'emailStatusError', message: 'Use an email address ending in @hippodigital.co.uk or @hippodigital.com.' });
+                }
             }
 
-            if (email && confirmEmail && email !== confirmEmail) {
+            if (!confirmEmail && email) {
+                errors.push({ inputId: 'confirmEmailInput', errorId: 'mismatchError', message: 'Enter the same email address in both fields.' });
+            } else if (email && confirmEmail && email !== confirmEmail) {
                 errors.push({ inputId: 'confirmEmailInput', errorId: 'mismatchError', message: 'Enter the same email address in both fields.' });
             }
 
@@ -400,14 +369,6 @@
         }
 
         document.getElementById('challengeForm').addEventListener('submit', validateForm);
-
-        function toggleOpacity() {
-            const content = document.getElementById('challengeContent');
-            const btn = document.getElementById('giveUpBtn');
-            if (!content) return;
-            content.classList.toggle('revealed');
-            btn.textContent = content.classList.contains('revealed') ? 'Hide page again' : 'Give up, show page';
-        }
     </script>
 </body>
 </html>
