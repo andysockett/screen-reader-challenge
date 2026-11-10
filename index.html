@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My GitHub Pages Site</title>
+    <title>Screen reader challenge</title>
     <style>
         :root {
             --primary: #2ea44f;
@@ -17,27 +17,20 @@
             margin: 0;
             color: var(--dark);
             background-color: var(--light);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        header {
-            background-color: var(--dark);
-            color: white;
-            padding: 2rem 1rem;
-            text-align: center;
         }
 
         main {
-            flex: 1;
             max-width: 800px;
             margin: 2rem auto;
-            padding: 0 1rem;
+            padding: 1.5rem;
             background: white;
             border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
+
+        h1, h2 { line-height: 1.25; }
+        a { color: #0969da; }
+        a:focus, button:focus { outline: 3px solid #0969da; outline-offset: 3px; }
 
         .btn {
             display: inline-block;
@@ -50,57 +43,79 @@
             margin-top: 1rem;
         }
 
-        footer {
-            text-align: center;
-            padding: 2rem;
-            font-size: 0.9rem;
-            color: #666;
+        .note {
+            padding: 1rem;
+            border-left: 4px solid #0969da;
+            background: #f6f8fa;
+        }
+
+        kbd {
+            padding: 0.1rem 0.35rem;
+            border: 1px solid #afb8c1;
+            border-radius: 4px;
+            background: #f6f8fa;
+            font-family: inherit;
+        }
+
+        @media (max-width: 600px) {
+            main { margin: 0; border-radius: 0; }
         }
     </style>
 </head>
 <body>
     <main>
-        <h2>Screen reader challenge</h2>
-        <p>To simulate the experience and potential frustration of a web user with a sight impairment, make your way through the following pages using only a screen reader. </p>
-        <h3>The rules:</h3>
-        <ul>
-            <li>No inspecting pages</li>
-            <li>Disable captions</li>
-            <li>Your username: exclusive@hippodigital.co.uk</li>
-            <li>Your password: blindtest</li>
-        </ul>
+        <h1>Screen reader challenge</h1>
+        <p>This is a short, deliberately difficult website-navigation exercise. Try completing the login and profile-update pages using a screen reader and your keyboard. It is designed to introduce some common accessibility barriers—not to reproduce the experience of living with sight loss.</p>
 
-        <h3>Setup:</h3>
+        <p class="note"><strong>New to screen readers?</strong> That is fine. You do not need prior experience. Set one up using the guide for your device below, try the few commands listed here, and take a break or stop whenever you like. You can also use the “Give up, show page” control on a challenge page to reveal its contents.</p>
 
-        <ul>
-            <li>Enable VoiceOver: command(cmd) + F5</li>
-            <li>VO = ctrl + opt</li>
+        <h2>Before you start</h2>
+        <ol>
+            <li>Use a computer with a keyboard and headphones or speakers. The built-in screen reader is enough; you do not need to buy or install anything on Mac, Windows, or many Linux computers.</li>
+            <li>Turn on the screen reader using the instructions for your operating system below. If you have never used it, take a minute to listen to its introduction or tutorial first.</li>
+            <li>Keep the screen reader running, open this page in a supported browser, and choose <strong>Start the challenge</strong>.</li>
+            <li>Use the screen reader to explore and interact with each page. The pages intentionally contain confusing labels and controls. There is no timer and no penalty for getting stuck.</li>
+        </ol>
+
+        <h2>Set up your screen reader</h2>
+
+        <h3>Mac: VoiceOver</h3>
+        <ol>
+            <li>Press <kbd>Command</kbd> + <kbd>F5</kbd> to turn VoiceOver on or off. On some keyboards, use <kbd>Fn</kbd> + <kbd>Command</kbd> + <kbd>F5</kbd>. You can also turn it on in System Settings under Accessibility, then VoiceOver.</li>
+            <li>For a first-time introduction, press <kbd>VO</kbd> + <kbd>F8</kbd> to open VoiceOver Utility, or choose the VoiceOver tutorial from the VoiceOver menu. “VO” means holding <kbd>Control</kbd> + <kbd>Option</kbd> together.</li>
+            <li>VoiceOver works with Safari and other browsers. If a command behaves differently, try Safari.</li>
             <li>
-                Turn off/on screen captions/cursor: VO + fn + cmd + F11
-                 <br><small><em> Should say "Hide Caption Window" </em></small>
-            
-            </li>    
-        </ul>
+                <strong>Optional extra challenge:</strong> turn off your screen reader’s on-screen speech captions or caption panel before starting using <kbd>VO</kbd> + <kbd>Fn</kbd> + <kbd>Command</kbd> +  <kbd>F11</kbd> You can turn captions back on or stop at any time. This exercise cannot reproduce the experience of sight loss but will force you not to rely on visual cues.
+            </li>
+        </ol>
+        <p><a href="https://support.apple.com/guide/voiceover/welcome/mac">Apple VoiceOver guide</a></p>
 
-        <p>These steps are important to ensure you experience the challenge without any visual cues. </p>
+        <h3>Windows: Narrator (built in)</h3>
+        <ol>
+            <li>Press <kbd>Windows</kbd> + <kbd>Control</kbd> + <kbd>Enter</kbd> to turn Narrator on or off. Or search Windows Settings for “Narrator” and switch it on.</li>
+            <li>If this is your first time, follow Narrator’s start-up prompts to learn its basic controls.</li>
+            <li>Narrator works with Microsoft Edge and other browsers. If you already use NVDA, it is also a popular free screen reader; download it from <a href="https://www.nvaccess.org/download/">NV Access</a> and follow its installation prompts.</li>
+        </ol>
+        <p><a href="https://support.microsoft.com/windows/complete-guide-to-narrator">Microsoft Narrator guide</a></p>
 
-        <h3>Voiceover basics:</h3>
+        <h3>Linux: Orca</h3>
+        <ol>
+            <li>Open your desktop’s Settings and look under Accessibility for Screen Reader, or search for Orca in the applications menu. The exact steps depend on your Linux desktop.</li>
+            <li>If Orca is not installed, use your distribution’s software installer to find and install “Orca screen reader,” then enable it in Accessibility settings.</li>
+            <li>For help with setup and keyboard commands, see the <a href="https://help.gnome.org/users/orca/stable/">Orca documentation</a>.</li>
+        </ol>
 
-        <ul>
-            <li>VO = ctrl + opt</li>
-            <li>Start reading: VO + A</li>
-            <li>Read next item: VO + →</li>
-            <li>Read previous item: VO + ←</li>
-            <li>Jump to top of page: VO + fn + ←</li>
-            <li>Click: VO + space </li>
-        </ul>
-
+        <h2>A few useful commands</h2>
         <p>Follow <a href="https://robinparker.co.uk/hippo-screenreader-cheat-sheet.html" target="_blank" rel="noopener noreferrer">this link </a>for more voiceover commands, including for windows. Courtesy of Robin Parker.</p>
 
-        
-        <p>Follow this link to begin...</p>
-        <a href="login-challenge.html" class="btn">Start the challenge</a>
-    </main>
+        <h2>Challenge rules and details</h2>
+        <ul>
+            <li>Please do not inspect the page visually, use developer tools, or look through the page source while attempting the challenge. The point is to try navigating with the screen reader.</li>
+            <li>The login page requires the username <code>exclusive@hippodigital.co.uk</code> and password <code>blindtest</code>. 
+            <li>The pages are intentionally inaccessible and can be frustrating. This is a learning exercise, not a test of you or of screen-reader users. Stop at any time, and remember that a short simulation cannot represent anyone’s real-world experience.</li>
+        </ul>
 
+        <p><a href="login-challenge.html" class="btn">Start the challenge</a></p>
+    </main>
 </body>
 </html>
