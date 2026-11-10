@@ -168,7 +168,7 @@
 <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
 
-    <main id="main-content">
+    <main id="main-content" style="opacity: 0;">
         <h1>Hippo 3000 Sign-In</h1>
         <p>We are thrilled to announce the new Hippo 3000! Sign in below to get early access and view your account details.</p>
 
@@ -270,15 +270,11 @@
         form.addEventListener('submit', validateLogin);
 
         function toggleOpacity() {
-            const content = document.getElementById('challengeContent');
+            const content = document.getElementById('main-content');
             const btn = document.getElementById('giveUpBtn');
 
-            if (!content) {
-                return;
-            }
-
-            content.classList.toggle('revealed');
-            btn.textContent = content.classList.contains('revealed') ? 'Hide page again' : 'Give up, show page';
+            content.style.opacity = content.style.opacity === '0' ? '1' : '0';
+            btn.textContent = content.style.opacity === '1' ? 'Hide page again' : 'Give up, show page';
         }
     </script>
 </body>
