@@ -221,11 +221,11 @@
             errorsCollection.push({ inputId: 'dobInput', message: 'Date of Birth is required.', errorId: 'dobError' });
         } else {
             const year = new Date(dob).getFullYear();
-            } else if (year < 2000) {
-                document.getElementById('dobError').textContent = 'Your date of birth must be before 2000 for a Hippo 3000.';
-                errorsCollection.push({ inputId: 'dobInput', message: 'Your date of birth must be before 2000 for a Hippo 3000.', errorId: 'dobError' });
-            } 
-        }
+            if (year >= 2000) {
+            document.getElementById('dobError').textContent = 'Your date of birth must be before 2000 for a Hippo 3000.';
+            errorsCollection.push({ inputId: 'dobInput', message: 'Your date of birth must be before 2000 for a Hippo 3000.', errorId: 'dobError' });
+    }
+}
 
         if (contactMethod === '') {
             errorsCollection.push({ inputId: 'contactMethodInput', message: 'Please select a contact method.', errorId: 'contactError' });
