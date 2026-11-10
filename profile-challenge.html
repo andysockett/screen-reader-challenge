@@ -69,7 +69,7 @@
 </head>
 <body>
 
-    <div id="challengeContent" style="opacity: 0;">
+    <div id="challengeContent" style="opacity: 0; visibility: hidden;">
         <span class="page-header">Update Your Profile Details</span>
 
         <p>Please review and update all fields before submitting your profile changes.</p>
@@ -239,11 +239,13 @@
         const content = document.getElementById('challengeContent');
         const btn = document.getElementById('giveUpBtn');
         
-        if (content.style.opacity === '0') {
+        if (content.style.visibility === 'hidden') {
+            content.style.visibility = 'visible';
             content.style.opacity = '1';
             btn.textContent = 'Hide page again';
         } else {
             content.style.opacity = '0';
+            content.style.visibility = 'hidden';
             btn.textContent = 'Give up, show page';
         }
     }
