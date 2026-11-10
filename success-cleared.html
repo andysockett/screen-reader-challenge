@@ -3,47 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Challenge Cleared!</title>
+    <title>Challenge cleared!</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 30px; text-align: center; }
-        
-        /* The Success Banner */
-        .success-banner {
-            background-color: #4CAF50; /* Green */
-            color: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin-bottom: 40px;
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            color: #24292e;
         }
-        
-        /* Semantic Heading for the banner */
+
+        .success-banner {
+            background-color: #e6f4ea;
+            color: #174b26;
+            padding: 25px;
+            border-left: 6px solid #27843b;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
         .success-banner h1 {
             margin: 0;
-            font-size: 2.5em;
+            font-size: 2em;
         }
 
         .next-step {
-            font-size: 1.2em;
-            color: #333;
+            font-size: 1.1em;
+        }
+
+        .solution-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 12px 18px;
+            background: #0969da;
+            color: white;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        a:focus {
+            outline: 3px solid #0969da;
+            outline-offset: 3px;
         }
     </style>
 </head>
 <body>
+    <main>
+        <section class="success-banner" aria-labelledby="success-heading">
+            <h1 id="success-heading">Challenge complete!</h1>
+        </section>
 
-    <div class="success-banner" role="status">
-        <h1>Submission Successful. Challenge Cleared!</h1>
-    </div>
+        <div class="next-step">
+            <p>You made it through the Hippo 3000 challenge. Unfortunately, Hippo 3000 stock is no longer available.</p>
 
-    <div class="next-step">
-        <p>You have successfully reached the end of the path. Unfortunately Hippo 3000 stock is no longer available.</p>
-        
-        <p>
-            <a> Now feel the difference accessibility can make... </a>
-            <br>
-            <a href="login-solution.html">Try again?</a>
-        </p>
-    </div>
-
+            <h2>See the accessible versions</h2>
+            <p>Want to see how the same login and profile-update pages work when accessibility is considered? Follow the link below to explore the improved versions.</p>
+            <p><a class="solution-link" href="login-solution.html">Explore the improved login and profile pages</a></p>
+        </div>
+    </main>
 </body>
 </html>
