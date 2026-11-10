@@ -234,7 +234,7 @@
         }
     }
 
-    // Handles the content reveal logic
+    // Handles the content reveal logic while keeping it in the accessibility tree.
     function toggleOpacity() {
         const content = document.getElementById('challengeContent');
         const btn = document.getElementById('giveUpBtn');
@@ -243,6 +243,10 @@
             content.style.opacity = '1';
             btn.textContent = 'Hide page again';
         } else {
+            // Blur the active control first so an open native select popup is dismissed.
+            if (content.contains(document.activeElement)) {
+                document.activeElement.blur();
+            }
             content.style.opacity = '0';
             btn.textContent = 'Give up, show page';
         }
