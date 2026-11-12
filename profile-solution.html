@@ -232,8 +232,8 @@
         <h1>Update Your Profile Details</h1>
         <p>Please review and update all fields before submitting your profile changes.</p>
 
-        <div id="errorSummary" class="error-summary" role="alert" aria-live="assertive" tabindex="-1">
-            <h2>There is a problem</h2>
+        <div id="errorSummary" class="error-summary" aria-labelledby="errorSummaryTitle" tabindex="-1">
+            <h2 id="errorSummaryTitle">There is a problem</h2>
             <ul id="errorSummaryList"></ul>
         </div>
 
@@ -241,33 +241,33 @@
             <div class="form-group">
                 <label for="firstNameInput">First Name</label>
                 <input type="text" id="firstNameInput" class="text-input" autocomplete="given-name" required>
-                <div id="firstNameError" class="error-field-message" aria-live="polite">Enter your first name.</div>
+                <div id="firstNameError" class="error-field-message">Enter your first name.</div>
             </div>
 
             <div class="form-group">
                 <label for="lastNameInput">Last Name</label>
                 <input type="text" id="lastNameInput" class="text-input" autocomplete="family-name" required>
-                <div id="lastNameError" class="error-field-message" aria-live="polite">Enter your last name.</div>
+                <div id="lastNameError" class="error-field-message">Enter your last name.</div>
             </div>
 
             <div class="form-group">
                 <label for="emailInput">Email Address</label>
                 <input type="email" id="emailInput" class="text-input" autocomplete="email" required>
-                <div id="emailRequiredError" class="error-field-message" aria-live="polite">Enter an email address.</div>
-                <div id="emailStatusError" class="error-field-message" aria-live="polite">Use an email address ending in @hippodigital.co.uk or @hippodigital.com.</div>
+                <div id="emailRequiredError" class="error-field-message">Enter an email address.</div>
+                <div id="emailStatusError" class="error-field-message">Use an email address ending in @hippodigital.co.uk or @hippodigital.com.</div>
             </div>
 
             <div class="form-group">
                 <label for="confirmEmailInput">Confirm Email</label>
                 <input type="email" id="confirmEmailInput" class="text-input" autocomplete="email" required>
-                <div id="mismatchError" class="error-field-message" aria-live="polite">Enter the same email address in both fields.</div>
+                <div id="mismatchError" class="error-field-message">Enter the same email address in both fields.</div>
             </div>
 
             <div class="form-group">
-                <fieldset class="fieldset-clean" role="group" aria-describedby="dobHint">
+                <fieldset id="dobFieldset" class="fieldset-clean" role="group" aria-describedby="dobHint">
                     <legend>Date of Birth</legend>
                     <div id="dobHint" class="hint-text">For example, 27 3 2007</div>
-                    <div id="dobError" class="error-field-message" aria-live="polite">Enter your complete date of birth.</div>
+                    <div id="dobError" class="error-field-message">Enter your complete date of birth.</div>
                     
                     <div class="date-group">
                         <div class="date-item">
@@ -296,15 +296,15 @@
                     <option value="letter">Letter</option>
                     <option value="house">I will come to your house</option>
                 </select>
-                <div id="contactError" class="error-field-message" aria-live="polite">Select a contact method.</div>
+                <div id="contactError" class="error-field-message">Select a contact method.</div>
             </div>
 
             <div class="form-group">
                 <div class="checkbox-row">
-                    <input type="checkbox" id="termsCheckbox" aria-describedby="termsError">
+                    <input type="checkbox" id="termsCheckbox">
                     <label for="termsCheckbox">I accept the Updated Privacy Terms</label>
                 </div>
-                <div id="termsError" class="error-field-message" aria-live="polite">Tick the checkbox to accept the terms.</div>
+                <div id="termsError" class="error-field-message">Tick the checkbox to accept the terms.</div>
             </div>
 
             <button type="submit" class="submit-control">Submit My Updates</button>
@@ -327,7 +327,7 @@
                 inputEl.setAttribute('aria-invalid', isError ? 'true' : 'false');
 
                 let currentDescribedBy = inputEl.getAttribute('aria-describedby') || '';
-                let ids = currentDescribedBy ? currentDescribedBy.split(' ').filter(Boolean) : [];
+                let ids = currentDescribedBy.split(' ').filter(Boolean);
 
                 if (isError) {
                     if (!ids.includes(errorId)) ids.push(errorId);
@@ -342,7 +342,7 @@
                 }
             }
 
-            if (errorEl) {
+            if (errorEl && message) {
                 errorEl.textContent = message;
                 errorEl.style.display = isError ? 'block' : 'none';
             }
@@ -356,8 +356,11 @@
                 el.style.display = 'none';
             });
 
-            document.querySelectorAll('input, select').forEach((el) => {
-                el.setAttribute('aria-invalid', 'false');
+            // Include fieldsets in the reset to clear group-level aria-describedby errors
+            document.querySelectorAll('input, select, fieldset').forEach((el) => {
+                if(el.tagName !== 'FIELDSET') {
+                    el.setAttribute('aria-invalid', 'false');
+                }
                 
                 let desc = el.getAttribute('aria-describedby');
                 if (desc) {
@@ -417,6 +420,13 @@
                 errors.push({ inputId: 'dobDay', errorId: 'dobError', message: 'Enter your complete date of birth.' });
                 document.getElementById('dobMonth').setAttribute('aria-invalid', 'true');
                 document.getElementById('dobYear').setAttribute('aria-invalid', 'true');
+                
+                // Attach the error to the fieldset as well for grouped announcement
+                let fs = document.getElementById('dobFieldset');
+                let currentDesc = fs.getAttribute('aria-describedby') || '';
+                if (!currentDesc.includes('dobError')) {
+                    fs.setAttribute('aria-describedby', (currentDesc + ' dobError').trim());
+                }
             }
 
             if (!contactMethod) {
@@ -446,11 +456,7 @@
                     summaryList.appendChild(item);
                 });
 
-                const firstInvalidField = document.getElementById(errors[0].inputId);
-                if (firstInvalidField) {
-                    firstInvalidField.focus();
-                }
-
+                // Focus the summary box to announce errors once
                 summaryBox.focus();
                 return;
             }
